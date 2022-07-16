@@ -10,5 +10,6 @@ setup(
         'watchdog',
         'sqlalchemy',
         'python-dateutil',
+        'pysqlite3',
     ],
 )

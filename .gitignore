@@ -1,3 +1,4 @@
 env/
 .idea/
 Watchdog_test.egg-info/
+lite.db
