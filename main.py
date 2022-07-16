@@ -21,18 +21,26 @@ class Handler(FileSystemEventHandler):
                 file_name
             ).groups()
 
-            flt = int(parsed_file_name[1])
-            date = from_any_date_to_iso(parsed_file_name[0])
-            dep = parsed_file_name[2]
+            result_obj = {
+                'flt': int(parsed_file_name[1]),
+                'date': from_any_date_to_iso(parsed_file_name[0]),
+                'dep': parsed_file_name[2],
+                'prl': [],
+            }
 
             csv_obj = csv.reader(f, delimiter=';')
             for row in csv_obj:
-                person = {
+                if not row:
+                    continue
+
+                result_obj['prl'].append({
                     'num': row[0],
                     'surname': row[1],
                     'firstname': row[2],
                     'bdate': from_any_date_to_iso(row[3]),
-                }
+                })
+
+            print(result_obj)
 
 
 if __name__ == '__main__':
