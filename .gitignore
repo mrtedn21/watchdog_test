@@ -1,4 +1,5 @@
 env/
 .idea/
 Watchdog_test.egg-info/
+__pycache__/
 lite.db
