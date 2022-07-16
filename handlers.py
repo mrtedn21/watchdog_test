@@ -1,5 +1,6 @@
 import csv
 import json
+import shutil
 import re
 from pathlib import Path
 
@@ -27,12 +28,17 @@ class CsvFileHandler:
         """ main function that handles file and
         save all data to db and other files"""
 
-        self._parse_file_path()
-        parsed_file_name = self._parse_file_name()
-        self._initial_flight_dict(parsed_file_name)
-        self._fill_flight_dict_with_person_data()
-        self._save_all_flights_to_db()
-        self._save_json_file()
+        try:
+            self._parse_file_path()
+            parsed_file_name = self._parse_file_name()
+            self._initial_flight_dict(parsed_file_name)
+            self._fill_flight_dict_with_person_data()
+            self._save_all_flights_to_db()
+            self._save_json_file()
+        except BaseException as e:
+            self._move_source_file('Err')
+        else:
+            self._move_source_file('Ok')
 
     def _parse_file_path(self):
         self.file_name = Path(self.file_path).stem
@@ -93,6 +99,14 @@ class CsvFileHandler:
     def _save_json_file(self):
         with open(self.result_file, 'w') as f:
             f.write(json.dumps(self.flight_dict))
+
+    def _move_source_file(self, directory_name):
+        parent_dir = Path(self.file_path).parent.parent
+
+        shutil.move(
+            self.file_path,
+            parent_dir / directory_name / self.file_name
+        )
 
 
 def from_any_date_to_iso(any_date: str):
