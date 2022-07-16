@@ -1,16 +1,38 @@
 import csv
+import re
 from pathlib import Path
 
+from dateutil.parser import parse
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+
+
+def from_any_date_to_iso(any_date: str):
+    date_obj = parse(any_date)
+    return date_obj.strftime('%Y-%m-%d')
 
 
 class Handler(FileSystemEventHandler):
     def on_created(self, event):
         with open(event.src_path, 'r') as f:
+            file_name = Path(event.src_path).stem
+            parsed_file_name = re.fullmatch(
+                '(\d{8})_(\d{1,})_(.{1,})',
+                file_name
+            ).groups()
+
+            flt = int(parsed_file_name[1])
+            date = from_any_date_to_iso(parsed_file_name[0])
+            dep = parsed_file_name[2]
+
             csv_obj = csv.reader(f, delimiter=';')
             for row in csv_obj:
-                print(', '.join(row))
+                person = {
+                    'num': row[0],
+                    'surname': row[1],
+                    'firstname': row[2],
+                    'bdate': from_any_date_to_iso(row[3]),
+                }
 
 
 if __name__ == '__main__':
