@@ -11,9 +11,12 @@ python -m pip install -e .
 ```
 
 Запустить приложение
+
 ```shell
 python main.py
 ```
+
+Все папки для работы скрипта находятся в working_directory
 
 ## Вопросы
 
