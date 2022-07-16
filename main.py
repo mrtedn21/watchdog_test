@@ -1,4 +1,5 @@
 import csv
+import json
 import re
 from pathlib import Path
 
@@ -40,7 +41,8 @@ class Handler(FileSystemEventHandler):
                     'bdate': from_any_date_to_iso(row[3]),
                 })
 
-            print(result_obj)
+        with open(Path(event.src_path).parent.parent / 'Out' / f'{file_name}.json', 'w') as f:
+            f.write(json.dumps(result_obj))
 
 
 if __name__ == '__main__':
