@@ -29,15 +29,23 @@ class CsvFileHandler:
         save all data to db and other files"""
 
         try:
+            print('Parsing file path')
             self._parse_file_path()
+            print('Parsing file name')
             parsed_file_name = self._parse_file_name()
+            print('Initial flight dict')
             self._initial_flight_dict(parsed_file_name)
+            print('Filling flight dict with person data')
             self._fill_flight_dict_with_person_data()
+            print('Saving all flights to db')
             self._save_all_flights_to_db()
+            print('Saving new json file')
             self._save_json_file()
         except BaseException as e:
+            print('Error during handle of file. Moving src file to "Err" dir')
             self._move_source_file('Err')
         else:
+            print('File has handled correctly. Moving src file to "Ok" dir')
             self._move_source_file('Ok')
 
     def _parse_file_path(self):
