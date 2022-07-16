@@ -5,8 +5,14 @@
 ```shell
 git clone https://github.com/mrtedn21/watchdog_test.git
 cd watchdog_test
+python -m venv env
 source env/bin/activate
 python -m pip install -e .
+```
+
+Запустить приложение
+```shell
+python main.py
 ```
 
 ## Вопросы
